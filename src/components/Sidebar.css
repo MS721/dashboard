@@ -1,0 +1,75 @@
+.sidebar {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(10px);
+}
+
+/* Translucent top navbar */
+.navbar {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.45);
+  padding: 15px 30px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.navbar h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+/* Filters row (one line layout) */
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  padding: 20px 40px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.filter-item label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.filter-item select {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #aad283;
+  background: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.filter-item select:hover {
+  border-color: #78c26b;
+}
+
+.filter-item select:focus {
+  outline: none;
+  box-shadow: 0 0 6px #a2e574;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .filters-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+}
