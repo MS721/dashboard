@@ -1,10 +1,6 @@
 import React from "react";
 import "./Sidebar.css";
 
-/**
- * Sidebar: navbar + filter dropdowns
- * Props: filters (object), setFilters (function)
- */
 export default function Sidebar({ filters, setFilters }) {
   // Full list of Indian states & UTs
   const states = [
