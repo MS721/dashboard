@@ -9,6 +9,8 @@ export default function App() {
     state: "",
     district: "",
     industry: "",
+    boundaries: "",
+    csv: null
   });
 
   return (
