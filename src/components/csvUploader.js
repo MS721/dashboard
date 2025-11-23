@@ -8,52 +8,79 @@ export async function uploadCSVToSupabase(file) {
   }
 
   try {
-    // --- FIX: add escapeChar + quoteChar for JSON inside CSV ---
+    // Parse CSV safely
     const parsed = await new Promise((resolve, reject) => {
       Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
-        dynamicTyping: true,
-        escapeChar: '"',
-        quoteChar: '"',
+        dynamicTyping: false,    // we will handle typing manually
         complete: resolve,
         error: reject,
       });
     });
 
     const rows = parsed.data;
-    if (!rows.length) {
+
+    if (!rows || rows.length === 0) {
       return { success: false, message: "CSV is empty." };
     }
 
-    // Map CSV → DB columns (ignore id, uploaded_at, data)
-    const formattedRows = rows.map((row) => ({
-      filename: row.filename || file.name,
-      date: row.date || null,
-      time: row.time || null,
-      coordinates: row.coordinates || null,
-      district: row.district || null,
-      state: row.state || null,
-      taluka: row.taluka || null,
-      village: row.village || null,
-      grid_id: row.grid_id || null,
-      gcp_id: row.gcp_id || null,
-      juliflora_count: row.juliflora_count || null,
-      other_species: row.other_species || null,
-      juliflora_density: row.juliflora_density || null,
+    // Allowed table columns
+    const allowedColumns = [
+      "filename",
+      "date",
+      "time",
+      "coordinates",
+      "district",
+      "state",
+      "taluka",
+      "village",
+      "grid_id",
+      "gcp_id",
+      "juliflora_count",
+      "other_species",
+      "juliflora_density",
+      "image"
+    ];
 
-      // Base64 → bytea
-      image: row.image
-        ? Buffer.from(
-            row.image.replace(/^data:image\/\w+;base64,/, "").trim(),
-            "base64"
-          )
-        : null,
-    }));
+    // Format rows to match schema exactly
+    const formattedRows = rows.map((row) => {
+      const cleaned = {};
 
-    const { error } = await supabase
-      .from("uploaded_csv")
-      .insert(formattedRows);
+      allowedColumns.forEach((col) => {
+        let val = row[col];
+
+        // treat empty strings or undefined as null
+        if (val === "" || val === undefined) val = null;
+
+        // Convert numeric columns
+        if (
+          ["juliflora_count", "other_species", "juliflora_density"].includes(col)
+        ) {
+          cleaned[col] = val !== null && !isNaN(val) ? Number(val) : null;
+        }
+
+        // Convert image base64 (safe)
+        else if (col === "image") {
+          cleaned.image = val ? val : null;
+        }
+
+        // Strings
+        else {
+          cleaned[col] = val;
+        }
+      });
+
+      // add filename for each row
+      cleaned.filename = file.name;
+
+      return cleaned;
+    });
+
+    console.log("Formatted rows:", formattedRows);
+
+    // Insert into Supabase
+    const { error } = await supabase.from("uploaded_csv").insert(formattedRows);
 
     if (error) {
       console.error("Supabase Insert Error:", error);
