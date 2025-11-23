@@ -2,23 +2,25 @@
 import { supabase } from "../supabaseClient";
 import Papa from "papaparse";
 
+// Clean corruption in CSV cells
 function cleanValue(val) {
   if (val === undefined || val === null) return null;
-  if (typeof val === "number") return val;
 
   let v = String(val).trim();
 
-  // Remove broken JSON fragments
+  // Remove corrupt JSON-like fragments
   v = v.replace(/^\{+|"|\}+$/g, "");
 
-  // Remove unwanted special characters
+  // Remove control characters
   v = v.replace(/[\u0000-\u001F]+/g, "");
 
-  // If looks like corrupted pattern, fix simple issues
+  // Replace multiple commas
   v = v.replace(/,,+/g, ",");
+
+  // Collapse weird whitespace
   v = v.replace(/\s+/g, " ");
 
-  // Clean .csv from district names
+  // Remove accidental .csv text
   v = v.replace(/\.csv/gi, "");
 
   return v === "" ? null : v;
@@ -30,11 +32,12 @@ export async function uploadCSVToSupabase(file) {
   }
 
   try {
+    // Parse CSV
     const parsed = await new Promise((resolve, reject) => {
       Papa.parse(file, {
         header: true,
         skipEmptyLines: false,
-        dynamicTyping: true,
+        dynamicTyping: false, // Keep all values as text first
         complete: resolve,
         error: reject,
       });
@@ -46,47 +49,46 @@ export async function uploadCSVToSupabase(file) {
       return { success: false, message: "CSV is empty." };
     }
 
-    const filenameNoExt = file.name.replace(".csv", "");
+    // Insert each row individually
+    for (let rawRow of rows) {
+      let row = {};
 
-    for (let row of rows) {
-      // CLEAN ALL FIELDS
-      Object.keys(row).forEach((key) => {
-        row[key] = cleanValue(row[key]);
+      // Clean every cell
+      Object.keys(rawRow).forEach((key) => {
+        row[key] = cleanValue(rawRow[key]);
       });
 
-      // Force district name from filename if missing or corrupted
-      if (!row.district || row.district.length < 3) {
-        row.district = filenameNoExt;
-      }
+      // Safe numeric conversion (Option A → empty = 0)
+      const num = (v) => (v === null || v === "" ? 0 : Number(v));
 
-      // Prepare final object matching your Supabase schema
+      // Clean base64 image (if present)
+      const cleanBase64 = (img) => {
+        if (!img || typeof img !== "string") return null;
+        return img.replace(/[^A-Za-z0-9+/=]/g, "");
+      };
+
+      // Prepare final row for Supabase
       const insertRow = {
         filename: file.name,
-        date: cleanValue(row.date),
-        time: cleanValue(row.time),
-        coordinates: cleanValue(row.coordinates),
-        district: cleanValue(row.district),
-        state: cleanValue(row.state),
-        taluka: cleanValue(row.taluka),
-        village: cleanValue(row.village),
-        grid_id: cleanValue(row.grid_id),
-        gcp_id: cleanValue(row.gcp_id),
+        date: row.date,
+        time: row.time,
+        coordinates: row.coordinates,
+        district: row.district,
+        state: row.state,
+        taluka: row.taluka,
+        village: row.village,
+        grid_id: row.grid_id,
+        gcp_id: row.gcp_id,
+        juliflora_count: num(row.juliflora_count),
+        other_species: num(row.other_species),
+        juliflora_density: num(row.juliflora_density),
+        image: cleanBase64(row.image),
 
-        // Convert numeric fields safely
-        juliflora_count: Number(row.juliflora_count || 0),
-        other_species: Number(row.other_species || 0),
-        juliflora_density: Number(row.juliflora_density || 0),
-
-        // Convert base64 safely
-        image:
-          row.image && typeof row.image === "string"
-            ? row.image.replace(/[^A-Za-z0-9+/=]/g, "")
-            : null,
-
-        // Full clean data stored as JSON (your original approach)
+        // keep full row as JSON
         data: row,
       };
 
+      // Insert into final table
       const { error } = await supabase
         .from("uploaded_csv")
         .insert(insertRow);
@@ -105,4 +107,3 @@ export async function uploadCSVToSupabase(file) {
     return { success: false, message: "Error parsing CSV file." };
   }
 }
-
