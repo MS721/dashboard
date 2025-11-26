@@ -4,17 +4,10 @@ import { uploadCSVToSupabase } from "./csvUploader"; // ✅ Import CSV uploader
 
 export default function Sidebar({ filters, setFilters }) {
   const states = [
-    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
-    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
-    "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya",
-    "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim",
-    "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand",
-    "West Bengal", "Andaman and Nicobar Islands", "Chandigarh",
-    "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir",
-    "Ladakh", "Lakshadweep", "Puducherry"
+    "Andhra Pradesh", "Gujarat", "Assam", "Karnataka","Tamil Nadu"
   ];
 
-  const biomassTypes = ["Cotton", "Rice", "Juliflora", "Bamboo"];
+  const biomassTypes = ["Maize", "Rice", "Juliflora", "Bamboo","Cotton"];
   const industries = ["Steel Plants", "Other Industries", "Rice Mill"];
 
   const boundaryOptions = [
