@@ -162,19 +162,25 @@ export default function Sidebar({ filters, setFilters }) {
           </div>
         </div>
 
-        {/* NEW PLACEHOLDER BUTTON */}
+        {/* FIELD COLLECTION BUTTON */}
         <div className="filter">
-          <label>Form:</label>
+          <label>Field Collection:</label>
           <button
             type="button"
+            className="sidebar-form-btn"
             onClick={() => window.open("/form-placeholder", "_blank")}
             style={{
-              padding: "8px",
+              padding: "10px",
               width: "100%",
+              backgroundColor: "#27ae60",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              fontWeight: "bold",
               cursor: "pointer"
             }}
           >
-            Open Form Page
+            Open Juliflora Form
           </button>
         </div>
 
