@@ -1,45 +1,44 @@
 import React from "react";
 
-const FormPage = () => {
+export default function FormPage() {
+  // Replace this with your actual Kobo Enketo Link
   const koboFormUrl = "https://ee.kobotoolbox.org/x/mxcFWuJf";
 
   return (
-    <div style={{ width: "100%", height: "100vh", backgroundColor: "#f4f4f4" }}>
-      {/* Optional Header to allow users to return */}
-      <div style={{ 
-        padding: "15px", 
+    <div style={{ width: "100%", height: "100vh", display: "flex", flexDirection: "column" }}>
+      <nav style={{ 
+        padding: "10px 20px", 
         background: "#2c3e50", 
         color: "white", 
         display: "flex", 
-        alignItems: "center" 
+        justifyContent: "space-between",
+        alignItems: "center"
       }}>
+        <h3 style={{ margin: 0 }}>Juliflora Survey Form</h3>
         <button 
-          onClick={() => window.history.back()}
+          onClick={() => window.close()} 
           style={{ 
-            marginRight: "20px", 
+            padding: "5px 15px", 
             cursor: "pointer", 
-            padding: "5px 10px",
-            borderRadius: "4px",
-            border: "none"
+            background: "#e74c3c", 
+            color: "white", 
+            border: "none", 
+            borderRadius: "4px" 
           }}
         >
-          ← Back to Map
+          Close Form
         </button>
-        <h3 style={{ margin: 0 }}>Juliflora Survey Form</h3>
-      </div>
+      </nav>
 
-      {/* The Iframe that displays the form */}
       <iframe
         src={koboFormUrl}
-        title="Kobo Survey Form"
+        title="Kobo Form"
         style={{
+          flex: 1,
           width: "100%",
-          height: "calc(100% - 60px)", // Subtracts header height
-          border: "none",
+          border: "none"
         }}
       />
     </div>
   );
-};
-
-export default FormPage;
+}
