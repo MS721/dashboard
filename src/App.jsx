@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import MapView from "./components/MapView";
-import FormPage from "./components/FormPage"; // ✅ Make sure to create this file
+import FormPage from "./components/FormPage"; // ✅ We will create this file next
 import "./App.css";
 
 export default function App() {
@@ -18,13 +18,18 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Main Dashboard Route */}
+        {/* ROUTE 1: Your Main Dashboard */}
         <Route 
           path="/" 
           element={
             <div className="app-root">
+              {/* Background layer */}
               <div className="bg-layer" />
+
+              {/* Sidebar (navbar + filters) */}
               <Sidebar filters={filters} setFilters={setFilters} />
+
+              {/* Main map section */}
               <main className="main-content">
                 <MapView filters={filters} />
               </main>
@@ -32,7 +37,7 @@ export default function App() {
           } 
         />
 
-        {/* Form Page Route */}
+        {/* ROUTE 2: The New Form Page */}
         <Route path="/form-placeholder" element={<FormPage />} />
       </Routes>
     </Router>
