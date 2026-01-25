@@ -1,12 +1,11 @@
 import React from "react";
 
 export default function FormPage() {
-  // Replace this with your actual Kobo Enketo Link
   const koboFormUrl = "https://ee.kobotoolbox.org/x/mxcFWuJf";
 
   return (
     <div style={{ width: "100%", height: "100vh", display: "flex", flexDirection: "column" }}>
-      <nav style={{ 
+      <div style={{ 
         padding: "10px 20px", 
         background: "#2c3e50", 
         color: "white", 
@@ -14,30 +13,19 @@ export default function FormPage() {
         justifyContent: "space-between",
         alignItems: "center"
       }}>
-        <h3 style={{ margin: 0 }}>Juliflora Survey Form</h3>
+        <h2 style={{ margin: 0, fontSize: "1.2rem" }}>Juliflora Data Collection</h2>
         <button 
           onClick={() => window.close()} 
-          style={{ 
-            padding: "5px 15px", 
-            cursor: "pointer", 
-            background: "#e74c3c", 
-            color: "white", 
-            border: "none", 
-            borderRadius: "4px" 
-          }}
+          style={{ cursor: "pointer", padding: "5px 15px", borderRadius: "4px", border: "none" }}
         >
           Close Form
         </button>
-      </nav>
-
+      </div>
+      
       <iframe
         src={koboFormUrl}
-        title="Kobo Form"
-        style={{
-          flex: 1,
-          width: "100%",
-          border: "none"
-        }}
+        title="Kobo Survey"
+        style={{ flex: 1, width: "100%", border: "none" }}
       />
     </div>
   );
