@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./Sidebar.css";
+import "./Sidebar.css"; 
 import { uploadCSVToSupabase } from "./csvUploader";
-import { supabase } from "./supabaseClient"; 
-import Papa from "papaparse"; 
+import { supabase } from "./supabaseClient";
+import Papa from "papaparse";
 
 export default function Sidebar({ filters, setFilters }) {
   const states = [
@@ -24,7 +24,7 @@ export default function Sidebar({ filters, setFilters }) {
   const districtsData = {
     "Andhra Pradesh": ["Anantapur", "Chittoor", "East Godavari", "Guntur", "Kadapa", "Krishna", "Kurnool", "Prakasam", "Nellore", "Srikakulam", "Visakhapatnam", "Vizianagaram", "West Godavari"],
     "Arunachal Pradesh": ["Anjaw", "Changlang", "East Kameng", "East Siang", "Kra Daadi", "Kurung Kumey", "Lepa Rada", "Lohit", "Longding", "Lower Dibang Valley", "Lower Subansiri", "Namsai", "Pakke Kessang", "Papum Pare", "Shi Yomi", "Siang", "Tawang", "Tirap", "Upper Dibang Valley", "Upper Siang", "Upper Subansiri", "West Kameng", "West Siang"],
-    "Assam": ["Baksa", "Barpeta", "Biswanath", "Bongaigaon", "Cachar", "Charaideo", "Chirang", "Darrang", "Dhemaji", "Dhubri", "Dibrugarh", "Goalpara", "Golaghat", "Hailakandi", "Hojai", "Jorhat", "Kamrup", "Kamrup Metropolitan", "Karbi Anglong", "Karimganj", "Kokrajhar", "Lakhimpur", "Majuli", "Morigaon", "Nagaon", "Nalbari", "Sivasagar", "Sonitpur", "South Salmara-Mankachar", "Tinsukia", "Udalguri", "West Karbi Long"],
+    "Assam": ["Baksa", "Barpeta", "Biswanath", "Bongaigaon", "Cachar", "Charaideo", "Chirang", "Darrang", "Dhemaji", "Dhubri", "Dibrugarh", "Goalpara", "Golaghat", "Hailakandi", "Hojai", "Jorhat", "Kamrup", "Kamrup Metropolitan", "Karbi Long", "Karimganj", "Kokrajhar", "Lakhimpur", "Majuli", "Morigaon", "Nagaon", "Nalbari", "Sivasagar", "Sonitpur", "South Salmara-Mankachar", "Tinsukia", "Udalguri", "West Karbi Long"],
     "Bihar": ["Araria", "Arwal", "Aurangabad", "Banka", "Begusarai", "Bhagalpur", "Bhojpur", "Buxar", "Darbhanga", "East Champaran", "Gaya", "Gopalganj", "Jamui", "Jehanabad", "Kaimur", "Katihar", "Khagaria", "Kishanganj", "Lakhisarai", "Madhepura", "Madhubani", "Munger", "Muzaffarpur", "Nalanda", "Nawada", "Patna", "Purnia", "Rohtas", "Saharsa", "Samastipur", "Saran", "Sheikhpura", "Sheohar", "Sitamarhi", "Siwan", "Supaul", "Vaishali", "West Champaran"],
     "Chhattisgarh": ["Balod", "Baloda Bazar", "Balrampur", "Bastar", "Bemetara", "Bijapur", "Bilaspur", "Dantewada", "Dhamtari", "Durg", "Gariaband", "Janjgir-Champa", "Jashpur", "Kabirdham", "Kanker", "Kondagaon", "Korba", "Koriya", "Mahasamund", "Mungeli", "Narayanpur", "Raigarh", "Raipur", "Rajnandgaon", "Sukma", "Surajpur", "Surguja"],
     "Goa": ["North Goa", "South Goa"],
@@ -65,8 +65,8 @@ export default function Sidebar({ filters, setFilters }) {
   const handleDownloadKoboData = async () => {
     setCsvStatus("Preparing download...");
     const { data, error } = await supabase
-      .from('biomass_collection')
-      .select('*');
+      .from("biomass_collection")
+      .select("*");
 
     if (error) {
       setCsvStatus("Download failed: " + error.message);
@@ -74,11 +74,11 @@ export default function Sidebar({ filters, setFilters }) {
     }
 
     const csv = Papa.unparse(data);
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", `Kobo_Field_Data_${new Date().toLocaleDateString()}.csv`);
+    link.setAttribute("download", `Field_Data_${new Date().toLocaleDateString()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -182,11 +182,10 @@ export default function Sidebar({ filters, setFilters }) {
 
         <div className="filter" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <label>Field Collection:</label>
-          
           <button
             type="button"
             className="sidebar-form-btn"
-            onClick={() => window.open("/form", "_blank")} 
+            onClick={() => window.open("/form", "_blank")}
             style={{
               padding: "10px",
               width: "100%",
