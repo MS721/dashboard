@@ -1,7 +1,6 @@
 import React from "react";
 
 export default function FormPage() {
-  // Pulling the link from environment variables to keep it hidden on GitHub
   const koboFormUrl = import.meta.env.VITE_KOBO_FORM_URL;
 
   return (
@@ -31,7 +30,7 @@ export default function FormPage() {
         />
       ) : (
         <div style={{ padding: "20px", textAlign: "center" }}>
-          Loading Form... Please ensure VITE_KOBO_FORM_URL is set.
+          Loading Form... Please ensure VITE_KOBO_FORM_URL is set in Vercel.
         </div>
       )}
     </div>
