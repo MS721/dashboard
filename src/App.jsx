@@ -18,18 +18,13 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* ROUTE 1: Your Main Dashboard */}
+        {/* Main Dashboard Route */}
         <Route 
           path="/" 
           element={
             <div className="app-root">
-              {/* Background layer */}
               <div className="bg-layer" />
-
-              {/* Sidebar (navbar + filters) */}
               <Sidebar filters={filters} setFilters={setFilters} />
-
-              {/* Main map section */}
               <main className="main-content">
                 <MapView filters={filters} />
               </main>
@@ -37,7 +32,7 @@ export default function App() {
           } 
         />
 
-        {/* ROUTE 2: Updated to match the Sidebar link */}
+        {/* Updated Route to match Sidebar link */}
         <Route path="/form" element={<FormPage />} />
       </Routes>
     </Router>
