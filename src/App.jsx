@@ -18,7 +18,6 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* Main Dashboard Route */}
         <Route 
           path="/" 
           element={
@@ -31,8 +30,6 @@ export default function App() {
             </div>
           } 
         />
-
-        {/* Updated Route to match Sidebar link */}
         <Route path="/form" element={<FormPage />} />
       </Routes>
     </Router>
