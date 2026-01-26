@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import MapView from "./components/MapView";
-import FormPage from "./components/FormPage"; // ✅ We will create this file next
+import FormPage from "./components/FormPage"; 
 import "./App.css";
 
 export default function App() {
@@ -37,8 +37,8 @@ export default function App() {
           } 
         />
 
-        {/* ROUTE 2: The New Form Page */}
-        <Route path="/form-placeholder" element={<FormPage />} />
+        {/* ROUTE 2: Updated to match the Sidebar link */}
+        <Route path="/form" element={<FormPage />} />
       </Routes>
     </Router>
   );
