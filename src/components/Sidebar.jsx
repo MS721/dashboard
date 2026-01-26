@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Sidebar.css"; 
 import { uploadCSVToSupabase } from "./csvUploader";
-import { supabase } from "./supabaseClient";
+import { supabase } from "../supabaseClient";
 import Papa from "papaparse";
 
 export default function Sidebar({ filters, setFilters }) {
