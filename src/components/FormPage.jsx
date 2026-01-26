@@ -1,7 +1,8 @@
 import React from "react";
 
 export default function FormPage() {
-  const koboFormUrl = "https://ee.kobotoolbox.org/x/mxcFWuJf";
+  // Pulling the link from environment variables to keep it hidden on GitHub
+  const koboFormUrl = import.meta.env.VITE_KOBO_FORM_URL;
 
   return (
     <div style={{ width: "100%", height: "100vh", display: "flex", flexDirection: "column" }}>
@@ -22,11 +23,17 @@ export default function FormPage() {
         </button>
       </div>
       
-      <iframe
-        src={koboFormUrl}
-        title="Kobo Survey"
-        style={{ flex: 1, width: "100%", border: "none" }}
-      />
+      {koboFormUrl ? (
+        <iframe
+          src={koboFormUrl}
+          title="Kobo Survey"
+          style={{ flex: 1, width: "100%", border: "none" }}
+        />
+      ) : (
+        <div style={{ padding: "20px", textAlign: "center" }}>
+          Loading Form... Please ensure VITE_KOBO_FORM_URL is set.
+        </div>
+      )}
     </div>
   );
 }
