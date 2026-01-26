@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
 import { uploadCSVToSupabase } from "./csvUploader"; 
-import { supabase } from "./supabaseClient"; // ✅ Import Supabase client
-import Papa from "papaparse"; // ✅ Import Papaparse for CSV generation
+import { supabase } from "./supabaseClient"; 
+import Papa from "papaparse"; 
 
 export default function Sidebar({ filters, setFilters }) {
   const states = [
-    "Andhra Pradesh", "Gujarat", "Assam", "Karnataka","Tamil Nadu"
+    "Andhra Pradesh", "Gujarat", "Assam", "Karnataka", "Tamil Nadu"
   ];
 
-  const biomassTypes = ["Maize", "Rice", "Juliflora", "Bamboo","Cotton"];
+  const biomassTypes = ["Maize", "Rice", "Juliflora", "Bamboo", "Cotton"];
   const industries = ["Steel Plants", "Other Industries", "Rice Mill"];
 
   const boundaryOptions = [
@@ -34,7 +34,7 @@ export default function Sidebar({ filters, setFilters }) {
     "Jharkhand": ["Bokaro", "Chatra", "Deoghar", "Dhanbad", "Dumka", "East Singhbhum", "Garhwa", "Giridih", "Godda", "Gumla", "Hazaribagh", "Jamtara", "Khunti", "Koderma", "Latehar", "Lohardaga", "Pakur", "Palamu", "Ramgarh", "Ranchi", "Sahebganj", "Seraikela-Kharsawan", "Simdega", "West Singhbhum"],
     "Karnataka": ["Bagalkot", "Ballari", "Belagavi", "Bengaluru Rural", "Bengaluru Urban", "Bidar", "Chamarajanagar", "Chikkaballapur", "Chikkamagaluru", "Chitradurga", "Dakshina Kannada", "Davanagere", "Dharwad", "Gadag", "Hassan", "Haveri", "Kalaburagi", "Kodagu", "Kolar", "Koppal", "Mandya", "Mysuru", "Raichur", "Ramanagara", "Shivamogga", "Tumakuru", "Udupi", "Uttara Kannada", "Vijayapura", "Yadgir"],
     "Kerala": ["Alappuzha", "Ernakulam", "Idukki", "Kannur", "Kasaragod", "Kollam", "Kottayam", "Kozhikode", "Malappuram", "Palakkad", "Pathanamthitta", "Thiruvananthapuram", "Thrissur", "Wayanad"],
-    "Tamil Nadu": ["Ariyalur","Chennai","Coimbatore","Madurai","Salem","Tiruppur","Trichy","Vellore"]
+    "Tamil Nadu": ["Ariyalur", "Chennai", "Coimbatore", "Madurai", "Salem", "Tiruppur", "Trichy", "Vellore"]
   };
 
   const handle = (key, value) => setFilters(prev => ({ ...prev, [key]: value }));
