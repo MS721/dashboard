@@ -92,7 +92,7 @@ export default function Sidebar({ filters, setFilters }) {
           <div className="logo">B</div>
           <h2>Dashboard</h2>
         </div>
-        <div style={{ color: "var(--muted)", fontSize: ".9rem" }}>
+        <div style={{ color: "gray", fontSize: ".9rem" }}>
           India · Biomass Map
         </div>
       </div>
