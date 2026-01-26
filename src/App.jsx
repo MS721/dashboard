@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import MapView from "./components/MapView";
-import FormPage from "./components/FormPage"; 
+import FormPage from "./components/FormPage";
 import "./App.css";
 
 export default function App() {
