@@ -24,7 +24,7 @@ export default function Sidebar({ filters, setFilters }) {
   const districtsData = {
     "Andhra Pradesh": ["Anantapur", "Chittoor", "East Godavari", "Guntur", "Kadapa", "Krishna", "Kurnool", "Prakasam", "Nellore", "Srikakulam", "Visakhapatnam", "Vizianagaram", "West Godavari"],
     "Arunachal Pradesh": ["Anjaw", "Changlang", "East Kameng", "East Siang", "Kra Daadi", "Kurung Kumey", "Lepa Rada", "Lohit", "Longding", "Lower Dibang Valley", "Lower Subansiri", "Namsai", "Pakke Kessang", "Papum Pare", "Shi Yomi", "Siang", "Tawang", "Tirap", "Upper Dibang Valley", "Upper Siang", "Upper Subansiri", "West Kameng", "West Siang"],
-    "Assam": ["Baksa", "Barpeta", "Biswanath", "Bongaigaon", "Cachar", "Charaideo", "Chirang", "Darrang", "Dhemaji", "Dhubri", "Dibrugarh", "Goalpara", "Golaghat", "Hailakandi", "Hojai", "Jorhat", "Kamrup", "Kamrup Metropolitan", "Karbi Anglong", "Karimganj", "Kokrajhar", "Lakhimpur", "Majuli", "Morigaon", "Nagaon", "Nalbari", "Sivasagar", "Sonitpur", "South Salmara-Mankachar", "Tinsukia", "Udalguri", "West Karbi Anglong"],
+    "Assam": ["Baksa", "Barpeta", "Biswanath", "Bongaigaon", "Cachar", "Charaideo", "Chirang", "Darrang", "Dhemaji", "Dhubri", "Dibrugarh", "Goalpara", "Golaghat", "Hailakandi", "Hojai", "Jorhat", "Kamrup", "Kamrup Metropolitan", "Karbi Anglong", "Karimganj", "Kokrajhar", "Lakhimpur", "Majuli", "Morigaon", "Nagaon", "Nalbari", "Sivasagar", "Sonitpur", "South Salmara-Mankachar", "Tinsukia", "Udalguri", "West Karbi Long"],
     "Bihar": ["Araria", "Arwal", "Aurangabad", "Banka", "Begusarai", "Bhagalpur", "Bhojpur", "Buxar", "Darbhanga", "East Champaran", "Gaya", "Gopalganj", "Jamui", "Jehanabad", "Kaimur", "Katihar", "Khagaria", "Kishanganj", "Lakhisarai", "Madhepura", "Madhubani", "Munger", "Muzaffarpur", "Nalanda", "Nawada", "Patna", "Purnia", "Rohtas", "Saharsa", "Samastipur", "Saran", "Sheikhpura", "Sheohar", "Sitamarhi", "Siwan", "Supaul", "Vaishali", "West Champaran"],
     "Chhattisgarh": ["Balod", "Baloda Bazar", "Balrampur", "Bastar", "Bemetara", "Bijapur", "Bilaspur", "Dantewada", "Dhamtari", "Durg", "Gariaband", "Janjgir-Champa", "Jashpur", "Kabirdham", "Kanker", "Kondagaon", "Korba", "Koriya", "Mahasamund", "Mungeli", "Narayanpur", "Raigarh", "Raipur", "Rajnandgaon", "Sukma", "Surajpur", "Surguja"],
     "Goa": ["North Goa", "South Goa"],
@@ -62,7 +62,6 @@ export default function Sidebar({ filters, setFilters }) {
     }
   };
 
-  // ✅ New Function: Download Kobo Data from Supabase
   const handleDownloadKoboData = async () => {
     setCsvStatus("Preparing download...");
     const { data, error } = await supabase
@@ -99,8 +98,6 @@ export default function Sidebar({ filters, setFilters }) {
       </div>
 
       <div className="filters-card" role="form" aria-label="Filters">
-
-        {/* Biomass Type */}
         <div className="filter">
           <label htmlFor="biomass">Biomass Type:</label>
           <div className="select">
@@ -115,7 +112,6 @@ export default function Sidebar({ filters, setFilters }) {
           </div>
         </div>
 
-        {/* State */}
         <div className="filter">
           <label htmlFor="state">State:</label>
           <div className="select">
@@ -130,7 +126,6 @@ export default function Sidebar({ filters, setFilters }) {
           </div>
         </div>
 
-        {/* District */}
         <div className="filter">
           <label htmlFor="district">District:</label>
           <div className="select">
@@ -146,7 +141,6 @@ export default function Sidebar({ filters, setFilters }) {
           </div>
         </div>
 
-        {/* Industries */}
         <div className="filter">
           <label htmlFor="industry">Industries:</label>
           <div className="select">
@@ -161,7 +155,6 @@ export default function Sidebar({ filters, setFilters }) {
           </div>
         </div>
 
-        {/* CSV Upload */}
         <div className="filter">
           <label htmlFor="csv">Upload CSV:</label>
           <input
@@ -173,7 +166,6 @@ export default function Sidebar({ filters, setFilters }) {
           {csvStatus && <p style={{ fontSize: "0.85rem", color: "#555" }}>{csvStatus}</p>}
         </div>
 
-        {/* Boundaries */}
         <div className="filter">
           <label htmlFor="boundaries">Boundaries:</label>
           <div className="select">
@@ -188,15 +180,13 @@ export default function Sidebar({ filters, setFilters }) {
           </div>
         </div>
 
-        {/* FIELD COLLECTION BUTTONS */}
         <div className="filter" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <label>Field Collection:</label>
           
-          {/* Open Form Button - URL Hidden in Env Var */}
           <button
             type="button"
             className="sidebar-form-btn"
-            onClick={() => window.open(import.meta.env.VITE_KOBO_FORM_URL, "_blank")}
+            onClick={() => window.open("/form", "_blank")} 
             style={{
               padding: "10px",
               width: "100%",
@@ -211,7 +201,6 @@ export default function Sidebar({ filters, setFilters }) {
             Open Juliflora Form
           </button>
 
-          {/* Download Form Submissions Button */}
           <button
             type="button"
             className="sidebar-download-btn"
@@ -230,7 +219,6 @@ export default function Sidebar({ filters, setFilters }) {
             Download Submissions
           </button>
         </div>
-
       </div>
     </header>
   );
