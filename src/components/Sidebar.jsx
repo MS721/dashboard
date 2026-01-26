@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
-import { uploadCSVToSupabase } from "./csvUploader"; // ✅ Import CSV uploader
+import { uploadCSVToSupabase } from "./csvUploader"; 
+import { supabase } from "./supabaseClient"; // ✅ Import Supabase client
+import Papa from "papaparse"; // ✅ Import Papaparse for CSV generation
 
 export default function Sidebar({ filters, setFilters }) {
   const states = [
@@ -58,6 +60,30 @@ export default function Sidebar({ filters, setFilters }) {
     if (result.success) {
       handle("csv", file);
     }
+  };
+
+  // ✅ New Function: Download Kobo Data from Supabase
+  const handleDownloadKoboData = async () => {
+    setCsvStatus("Preparing download...");
+    const { data, error } = await supabase
+      .from('biomass_collection')
+      .select('*');
+
+    if (error) {
+      setCsvStatus("Download failed: " + error.message);
+      return;
+    }
+
+    const csv = Papa.unparse(data);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `Kobo_Field_Data_${new Date().toLocaleDateString()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setCsvStatus("Download complete!");
   };
 
   return (
@@ -162,13 +188,15 @@ export default function Sidebar({ filters, setFilters }) {
           </div>
         </div>
 
-        {/* FIELD COLLECTION BUTTON */}
-        <div className="filter">
+        {/* FIELD COLLECTION BUTTONS */}
+        <div className="filter" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           <label>Field Collection:</label>
+          
+          {/* Open Form Button - URL Hidden in Env Var */}
           <button
             type="button"
             className="sidebar-form-btn"
-            onClick={() => window.open("/form-placeholder", "_blank")}
+            onClick={() => window.open(import.meta.env.VITE_KOBO_FORM_URL, "_blank")}
             style={{
               padding: "10px",
               width: "100%",
@@ -181,6 +209,25 @@ export default function Sidebar({ filters, setFilters }) {
             }}
           >
             Open Juliflora Form
+          </button>
+
+          {/* Download Form Submissions Button */}
+          <button
+            type="button"
+            className="sidebar-download-btn"
+            onClick={handleDownloadKoboData}
+            style={{
+              padding: "10px",
+              width: "100%",
+              backgroundColor: "#2980b9",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              fontWeight: "bold",
+              cursor: "pointer"
+            }}
+          >
+            Download Submissions
           </button>
         </div>
 
