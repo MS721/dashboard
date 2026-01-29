@@ -88,7 +88,6 @@ export default function Sidebar({ filters, setFilters }) {
     <header className="sidebar-root">
       <div className="navbar">
         <div className="brand">
-          <div className="logo">B</div>
           <h2>Dashboard</h2>
         </div>
         <div style={{ color: "gray", fontSize: ".9rem" }}>
@@ -96,7 +95,6 @@ export default function Sidebar({ filters, setFilters }) {
         </div>
       </div>
 
-      {/* 🔹 TOP SINGLE LINE FILTER BAR */}
       <div className="filters-row">
         <div className="filter">
           <label>Biomass Type</label>
@@ -148,21 +146,14 @@ export default function Sidebar({ filters, setFilters }) {
         </div>
       </div>
 
-      {/* 🔹 CENTER FIELD COLLECTION */}
       <div className="field-collection-center">
         <label>Field Collection</label>
 
-        <button
-          onClick={() => window.open("/form", "_blank")}
-          className="sidebar-form-btn"
-        >
+        <button onClick={() => window.open("/form", "_blank")}>
           Open Juliflora Form
         </button>
 
-        <button
-          onClick={handleDownloadKoboData}
-          className="sidebar-download-btn"
-        >
+        <button onClick={handleDownloadKoboData}>
           Download Submissions
         </button>
 
