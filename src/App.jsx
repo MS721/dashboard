@@ -27,13 +27,16 @@ export default function App() {
               <Sidebar filters={filters} setFilters={setFilters} />
               <main className="main-content">
                 <MapView filters={filters} />
+                {/* TABLE BELOW MAP */}
+                <DashboardTable />
               </main>
             </div>
           } 
         />
         <Route path="/form" element={<FormPage />} />
-       <Route path="/dashboard" element={<DashboardTable />} />
       </Routes>
     </Router>
   );
 }
+
+
