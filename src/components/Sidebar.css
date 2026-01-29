@@ -15,8 +15,6 @@
 }
 
 
-/* Top navbar */
-
 .navbar {
 
   backdrop-filter: blur(10px);
@@ -42,8 +40,6 @@
 
 }
 
-
-/* Filters container - side by side */
 
 .filters-card {
 
@@ -92,8 +88,6 @@
 }
 
 
-/* 🔹 UPDATED COLORS HERE */
-
 .filter .select select,
 
 .filter input[type="file"] {
@@ -104,9 +98,9 @@
 
   border: 1px solid #aad283;
 
-  background: rgba(255, 255, 255, 0.85);   /* translucent white */
+  background: rgba(255, 255, 255, 0.9) !important;
 
-  color: #1a1a1a;
+  color: #000 !important;
 
   font-size: 0.95rem;
 
@@ -132,12 +126,10 @@
 
   box-shadow: 0 0 6px #a2e574;
 
-  background: rgba(220, 255, 220, 0.9);  /* light green */
+  background: rgba(220, 255, 220, 0.9) !important;
 
 }
 
-
-/* Responsive */
 
 @media (max-width: 768px) {
 
@@ -151,10 +143,6 @@
 
 }
 
-
-/* ========================= */
-/* Added Code               */
-/* ========================= */
 
 .filters-row {
 
@@ -182,8 +170,6 @@
 }
 
 
-/* 🔹 UPDATED COLORS HERE */
-
 .filters-row select,
 
 .filters-row input {
@@ -192,13 +178,13 @@
 
   min-width: 140px;
 
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.9) !important;
 
   border: 1px solid #aad283;
 
   border-radius: 6px;
 
-  color: #1a1a1a;
+  color: #000 !important;
 
 }
 
