@@ -76,7 +76,7 @@
 
   gap: 4px;
 
-  flex: 1 1 200px; /* grow, shrink, base width */
+  flex: 1 1 200px;
 
   min-width: 180px;
 
@@ -92,6 +92,8 @@
 }
 
 
+/* 🔹 UPDATED COLORS HERE */
+
 .filter .select select,
 
 .filter input[type="file"] {
@@ -102,7 +104,9 @@
 
   border: 1px solid #aad283;
 
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.85);   /* translucent white */
+
+  color: #1a1a1a;
 
   font-size: 0.95rem;
 
@@ -128,6 +132,8 @@
 
   box-shadow: 0 0 6px #a2e574;
 
+  background: rgba(220, 255, 220, 0.9);  /* light green */
+
 }
 
 
@@ -147,7 +153,7 @@
 
 
 /* ========================= */
-/* Added Code (unchanged)   */
+/* Added Code               */
 /* ========================= */
 
 .filters-row {
@@ -176,6 +182,8 @@
 }
 
 
+/* 🔹 UPDATED COLORS HERE */
+
 .filters-row select,
 
 .filters-row input {
@@ -183,6 +191,14 @@
   padding: 6px;
 
   min-width: 140px;
+
+  background: rgba(255, 255, 255, 0.85);
+
+  border: 1px solid #aad283;
+
+  border-radius: 6px;
+
+  color: #1a1a1a;
 
 }
 
