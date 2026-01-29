@@ -31,6 +31,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;   /* ✅ FIX — WAS overflow: hidden */
 }
 
 /* Background */
@@ -50,8 +51,8 @@ body {
   z-index: 3;
   padding: 28px;
   display: flex;
-  flex-direction: column; /* IMPORTANT */
-  gap: 28px;              /* space between map & table */
+  flex-direction: column;
+  gap: 28px;
   align-items: center;
   width: 100%;
 }
