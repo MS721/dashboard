@@ -15,7 +15,7 @@
 html,body,#root { 
   height: 100%; 
   width: 100%;
-  overflow-x: hidden; /* prevent right-side scroll */
+  overflow-x: hidden;
 }
 body {
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -31,10 +31,9 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
-/* Fancy diagonal gradient: green from top-right to yellow bottom-left */
+/* Background */
 .bg-layer{
   position: absolute;
   inset: 0;
@@ -43,174 +42,43 @@ body {
     radial-gradient(circle at top right, rgba(129, 219, 140, 0.45) 0%, rgba(184,255,187,0.20) 30%),
     linear-gradient(225deg, var(--bg-green) 0%, var(--bg-yellow) 100%);
   filter: saturate(1.03);
-  transition: opacity .3s ease;
 }
 
-/* Top container that holds nav + filters */
-.sidebar-root {
-  position: relative;
-  z-index: 5;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding: 18px 22px;
-  align-items: center;
-  align-self: stretch;
-}
-
-/* Translucent navbar */
-.navbar {
-  width: 100%;
-  max-width: 1200px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 18px;
-  border-radius: 14px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.50));
-  backdrop-filter: blur(8px) saturate(1.05);
-  box-shadow: var(--card-shadow);
-  border: 1px solid rgba(255,255,255,0.45);
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.brand .logo {
-  height: 36px;
-  width: 36px;
-  border-radius: 9px;
-  background: linear-gradient(135deg, var(--accent), #b8e88f);
-  box-shadow: 0 3px 8px rgba(127,201,111,0.25);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  color: white;
-  font-size: 0.95rem;
-}
-.brand h2 {
-  font-size: 1.05rem;
-  letter-spacing: -0.2px;
-}
-
-/* Filters row card */
-.filters-card {
-  width: 100%;
-  max-width: 1200px;
-  display: flex;
-  flex-wrap: wrap; /* allow wrapping */
-  gap: 18px;
-  padding: 14px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.45));
-  border: 1px solid rgba(255,255,255,0.5);
-  box-shadow: 0 6px 22px rgba(10, 18, 10, 0.06);
-  align-items: center;
-  justify-content: center;
-  max-width: 100%; /* prevent overflow */
-}
-
-/* Each filter group */
-.filter {
-  flex: 1 1 180px; /* grow/shrink dynamically */
-  max-width: 260px;
-  min-height: 56px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.filter label {
-  font-size: 0.85rem;
-  color: var(--muted);
-  font-weight: 600;
-}
-
-/* nice select */
-.select {
-  position: relative;
-}
-.select select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  width: 100%;
-  padding: 10px 38px 10px 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(125, 175, 110, 0.18);
-  background: rgba(255,255,255,0.95);
-  font-size: 0.95rem;
-  color: var(--text);
-  box-shadow: 0 2px 8px rgba(10,10,10,0.03);
-  transition: box-shadow .15s ease, border-color .15s ease, transform .08s ease;
-}
-.select select:focus{
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 6px 20px rgba(127,201,111,0.12);
-  transform: translateY(-1px);
-}
-
-/* custom arrow using pseudo-element on parent */
-.select:after{
-  content: "";
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%) rotate(0deg);
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid rgba(40,40,40,0.6);
-  border-bottom: 2px solid rgba(40,40,40,0.6);
-  transform-origin: center;
-  transform: translateY(-50%) rotate(45deg);
-  pointer-events: none;
-  opacity: 0.9;
-}
-
-/* Map container card */
+/* Main content */
 .main-content {
   position: relative;
   z-index: 3;
   padding: 28px;
   display: flex;
-  flex: 1;
-  align-items: stretch;
-  justify-content: center;
-  max-width: 100%; /* prevent overflow */
+  flex-direction: column; /* IMPORTANT */
+  gap: 28px;              /* space between map & table */
+  align-items: center;
+  width: 100%;
 }
 
+/* Map card */
 .map-card {
   width: 100%;
   max-width: 1200px;
-  height: calc(100vh - 220px); /* adjust for top area */
+  height: calc(100vh - 220px);
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid rgba(0,0,0,0.06);
   box-shadow: 0 16px 50px rgba(10, 20, 10, 0.07);
   background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.02));
-  max-width: 100%; /* prevent overflow */
 }
 
-/* leaflet full fill inside card */
+/* Leaflet */
 .leaflet-container {
   width: 100%;
   height: 100%;
   outline: none;
 }
 
-/* small-screen behaviour */
+/* Responsive */
 @media (max-width: 1100px) {
-  .filter { flex: 1 1 45%; max-width: 100%; }
   .map-card { height: calc(100vh - 300px); }
 }
 @media (max-width: 720px) {
-  .filter { flex: 1 1 100%; min-width: 0; }
-  .navbar, .filters-card, .map-card { border-radius: 10px; padding: 12px; }
-  .brand h2 { font-size: 1rem; }
   .map-card { height: calc(100vh - 320px); }
 }
