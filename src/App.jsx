@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import MapView from "./components/MapView";
 import FormPage from "./components/FormPage";
+import Dashboard from "./components/Dashboard";
 import "./App.css";
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
           } 
         />
         <Route path="/form" element={<FormPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );
