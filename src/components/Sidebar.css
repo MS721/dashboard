@@ -39,6 +39,7 @@
   font-size: 0.9rem;
 }
 
+/* Make all select and file input boxes the same size */
 .filters-row select,
 .filters-row input[type="file"] {
   height: 42px;
@@ -48,6 +49,8 @@
   background: rgba(255, 255, 255, 0.9) !important;
   color: #000 !important;
   font-size: 0.9rem;
+  width: 100%;   /* added to make width consistent */
+  box-sizing: border-box; /* ensures padding doesn't increase width */
 }
 
 .field-collection-center {
