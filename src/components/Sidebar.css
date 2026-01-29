@@ -1,280 +1,81 @@
 .sidebar-root {
-
   position: relative;
-
   z-index: 2;
-
   width: 100%;
-
   display: flex;
-
   flex-direction: column;
-
   backdrop-filter: blur(10px);
-
 }
-
 
 .navbar {
-
   backdrop-filter: blur(10px);
-
   background: rgba(255, 255, 255, 0.45);
-
   padding: 15px 30px;
-
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-
   text-align: left;
-
 }
-
 
 .navbar h2 {
-
   font-size: 1.8rem;
-
   font-weight: 700;
-
   color: #1a1a1a;
-
 }
-
-
-.filters-card {
-
-  display: flex;
-
-  flex-direction: row;
-
-  flex-wrap: wrap;
-
-  gap: 20px;
-
-  padding: 15px 20px;
-
-  background: rgba(255, 255, 255, 0.4);
-
-  backdrop-filter: blur(12px);
-
-  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
-
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-
-}
-
-
-.filter {
-
-  display: flex;
-
-  flex-direction: column;
-
-  gap: 4px;
-
-  flex: 1 1 200px;
-
-  min-width: 180px;
-
-}
-
-
-.filter label {
-
-  font-weight: 600;
-
-  font-size: 0.95rem;
-
-}
-
-
-.filter .select select,
-
-.filter input[type="file"] {
-
-  padding: 10px 14px;
-
-  border-radius: 8px;
-
-  border: 1px solid #aad283;
-
-  background: rgba(255, 255, 255, 0.9) !important;
-
-  color: #000 !important;
-
-  font-size: 0.95rem;
-
-  transition: all 0.3s ease;
-
-}
-
-
-.filter .select select:hover,
-
-.filter input[type="file"]:hover {
-
-  border-color: #78c26b;
-
-}
-
-
-.filter .select select:focus,
-
-.filter input[type="file"]:focus {
-
-  outline: none;
-
-  box-shadow: 0 0 6px #a2e574;
-
-  background: rgba(220, 255, 220, 0.9) !important;
-
-}
-
-
-@media (max-width: 768px) {
-
-  .filters-card {
-
-    flex-direction: column;
-
-    gap: 10px;
-
-  }
-
-}
-
 
 .filters-row {
-
-  display: flex;
-
-  gap: 12px;
-
-  padding: 10px;
-
-  align-items: flex-end;
-
-  flex-wrap: wrap;
-
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 15px;
+  padding: 15px 20px;
 }
 
-
-.filters-row .filter {
-
+.filter {
   display: flex;
-
   flex-direction: column;
-
-  font-size: 0.85rem;
-
+  gap: 6px;
 }
 
+.filter label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
 
 .filters-row select,
-
-.filters-row input {
-
-  padding: 6px;
-
-  min-width: 140px;
-
-  background: rgba(255, 255, 255, 0.9) !important;
-
+.filters-row input[type="file"] {
+  height: 42px;
+  padding: 8px 12px;
+  border-radius: 8px;
   border: 1px solid #aad283;
-
-  border-radius: 6px;
-
+  background: rgba(255, 255, 255, 0.9) !important;
   color: #000 !important;
-
+  font-size: 0.9rem;
 }
 
-
 .field-collection-center {
-
-  margin: 30px auto;
-
+  margin: 40px auto;
   width: 300px;
-
   text-align: center;
-
-}
-
-
-/* BUTTON FIX + ALIGNMENT */
-
-.field-collection-center {
-
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
-
-  gap: 14px;
-
+  gap: 16px;
 }
-
 
 .field-collection-center button {
-
-  background: rgba(255, 255, 255, 0.85) !important;
-
-  color: #1a1a1a !important;
-
-  border: 1px solid #aad283;
-
-  padding: 12px 26px;
-
-  border-radius: 10px;
-
-  font-size: 0.95rem;
-
-  cursor: pointer;
-
-  transition: all 0.3s ease;
-
-}
-
-
-.field-collection-center button:hover {
-
-  background: rgba(220, 255, 220, 0.95) !important;
-
-}
-
-
-.csv-status {
-
-  font-size: 0.85rem;
-
-  color: #555;
-
-  margin-top: 10px;
-
-}
-/* ===== FORCE ALL BUTTONS LIGHT & STACKED ===== */
-
-button {
+  width: 100%;
   background: rgba(255, 255, 255, 0.9) !important;
   color: #1a1a1a !important;
-  border: 1px solid #aad283 !important;
-  border-radius: 10px !important;
-  padding: 12px 26px !important;
-  font-size: 0.95rem !important;
-  cursor: pointer !important;
+  border: 1px solid #aad283;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
 }
 
-button:hover {
+.field-collection-center button:hover {
   background: rgba(220, 255, 220, 0.95) !important;
 }
 
-/* Center + vertical stack */
-
-.field-collection-center,
-.field-collection-center * {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 14px !important;
+.csv-status {
+  font-size: 0.85rem;
+  color: #555;
 }
-
