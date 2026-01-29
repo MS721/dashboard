@@ -26,7 +26,11 @@ export default function App() {
               <div className="bg-layer" />
               <Sidebar filters={filters} setFilters={setFilters} />
               <main className="main-content">
-                <MapView filters={filters} />
+                {/* MAP */}
+                <div className="map-card">
+                  <MapView filters={filters} />
+                </div>
+
                 {/* TABLE BELOW MAP */}
                 <DashboardTable />
               </main>
@@ -38,5 +42,3 @@ export default function App() {
     </Router>
   );
 }
-
-
