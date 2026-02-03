@@ -69,7 +69,15 @@ export default function Sidebar({ filters, setFilters }) {
       return;
     }
 
-    const csv = Papa.unparse(data);
+    // Transform data to make PHOTO_URL a clickable hyperlink in Excel
+    const formattedData = data.map(row => ({
+      ...row,
+      PHOTO_URL: row.PHOTO_URL 
+        ? `=HYPERLINK("${row.PHOTO_URL}", "Click to View Photo")` 
+        : "No Photo"
+    }));
+
+    const csv = Papa.unparse(formattedData);
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
