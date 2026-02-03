@@ -69,13 +69,23 @@ export default function Sidebar({ filters, setFilters }) {
       return;
     }
 
-    // Transform data to make PHOTO_URL a clickable hyperlink in Excel
-    const formattedData = data.map(row => ({
-      ...row,
-      PHOTO_URL: row.PHOTO_URL 
-        ? `=HYPERLINK("${row.PHOTO_URL}", "Click to View Photo")` 
-        : "No Photo"
-    }));
+    // CLEANING LOGIC: Fixes [object Object] and creates Excel Hyperlinks
+    const formattedData = data.map(row => {
+      // 1. Extract photo name if it's trapped in an object
+      let photoName = row.PLANT_PHOTO;
+      if (typeof row.PLANT_PHOTO === 'object' && row.PLANT_PHOTO !== null) {
+        photoName = row.PLANT_PHOTO.name || "Image_File";
+      }
+
+      // 2. Generate the Excel Hyperlink using the PHOTO_URL column
+      return {
+        ...row,
+        PLANT_PHOTO: photoName,
+        PHOTO_URL: row.PHOTO_URL 
+          ? `=HYPERLINK("${row.PHOTO_URL}", "Click to View Photo")` 
+          : "No Link Generated"
+      };
+    });
 
     const csv = Papa.unparse(formattedData);
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
