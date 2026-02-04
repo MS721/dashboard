@@ -77,7 +77,7 @@ export default function Sidebar({ filters, setFilters }) {
       }
 
       // 2. THE FIX: Using the Global Gallery Redirect format
-      // Replace 'YOUR_USERNAME' with your actual Kobo Global username
+      // Note: Replace 'YOUR_USERNAME' with your actual Kobo Global username
       const stableLink = photoName 
         ? `https://kf.kobotoolbox.org/attachment/original?media_file=YOUR_USERNAME/attachments/${photoName}` 
         : "";
