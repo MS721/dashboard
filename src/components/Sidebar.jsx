@@ -70,15 +70,16 @@ export default function Sidebar({ filters, setFilters }) {
     }
 
     const formattedData = data.map(row => {
-      // Fix for [object Object] in filename
+      // 1. Extract the clean filename
       let photoName = row.PLANT_PHOTO;
       if (typeof row.PLANT_PHOTO === 'object' && row.PLANT_PHOTO !== null) {
         photoName = row.PLANT_PHOTO.name || "Image_File";
       }
 
-      // Stable link format for public attachments
+      // 2. THE FIX: Using the direct view link format
+      // Note: This works best when "Anyone can view submissions" is ON in Kobo settings.
       const stableLink = photoName 
-        ? `https://kc.humanitarianresponse.info/attachments/get/${photoName}` 
+        ? `https://kc.humanitarianresponse.info/api/v1/data/${row._id}/attachments/${photoName}` 
         : "";
 
       return {
@@ -88,7 +89,7 @@ export default function Sidebar({ filters, setFilters }) {
       };
     });
 
-    // Unparse without quotes to help Excel recognize links
+    // Unparse without quotes for cleaner Excel recognition
     const csv = Papa.unparse(formattedData, {
       quotes: false, 
       delimiter: ","
