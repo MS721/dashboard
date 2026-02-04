@@ -69,17 +69,18 @@ export default function Sidebar({ filters, setFilters }) {
       return;
     }
 
+    // Pulls from Vercel Environment Variables securely
+    const KOBO_USERNAME = process.env.REACT_APP_KOBO_USERNAME;
+
     const formattedData = data.map(row => {
-      // 1. Clean filename
       let photoName = row.PLANT_PHOTO;
       if (typeof row.PLANT_PHOTO === 'object' && row.PLANT_PHOTO !== null) {
         photoName = row.PLANT_PHOTO.name || "Image_File";
       }
 
-      // 2. THE FIX: Using the Global Gallery Redirect format
-      // Note: Replace 'YOUR_USERNAME' with your actual Kobo Global username
-      const stableLink = photoName 
-        ? `https://kf.kobotoolbox.org/attachment/original?media_file=YOUR_USERNAME/attachments/${photoName}` 
+      // Securely constructed link using the env variable
+      const stableLink = (photoName && KOBO_USERNAME)
+        ? `https://kf.kobotoolbox.org/attachment/original?media_file=${KOBO_USERNAME}/attachments/${photoName}` 
         : "";
 
       return {
