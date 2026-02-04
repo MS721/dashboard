@@ -69,8 +69,8 @@ export default function Sidebar({ filters, setFilters }) {
       return;
     }
 
-    // Pulls from Vercel/Env or fallback
-    const KOBO_USERNAME = process.env.REACT_APP_KOBO_USERNAME || "your_actual_username";
+    // Attempt to get from Environment Variable, or fallback to your string
+    const KOBO_USERNAME = process.env.REACT_APP_KOBO_USERNAME || "YOUR_USERNAME";
 
     const formattedData = data.map(row => {
       let photoName = row.PLANT_PHOTO;
@@ -78,14 +78,11 @@ export default function Sidebar({ filters, setFilters }) {
         photoName = row.PLANT_PHOTO.name || "Image_File";
       }
 
-      // NEW URL STRUCTURE: Includes the submission _id which is more reliable
-      // Format: https://kf.kobotoolbox.org/api/v1/data/SUBMISSION_ID/attachments/FILENAME
-      // If this fails, we fall back to the username-based redirect
-      const stableLink = (photoName && row._id)
-        ? `https://kf.kobotoolbox.org/api/v1/data/${row._id}/attachments/${photoName}`
-        : photoName 
-          ? `https://kf.kobotoolbox.org/attachment/original?media_file=${KOBO_USERNAME}/attachments/${photoName}`
-          : "";
+      // THE LEGACY FIX: 
+      // This URL bypasses many API restrictions on the Global Server
+      const stableLink = photoName 
+        ? `https://kf.kobotoolbox.org/media/get/${KOBO_USERNAME}/attachments/${photoName}` 
+        : "";
 
       return {
         ...row,
@@ -103,7 +100,10 @@ export default function Sidebar({ filters, setFilters }) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", `Field_Data_${new Date().toISOString().split("T")[0]}.csv`);
+    link.setAttribute(
+      "download",
+      `Field_Data_${new Date().toISOString().split("T")[0]}.csv`
+    );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -113,12 +113,15 @@ export default function Sidebar({ filters, setFilters }) {
   return (
     <header className="sidebar-root">
       <div className="navbar">
-        <div className="brand"><h2>Dashboard</h2></div>
-        <div style={{ color: "gray", fontSize: ".9rem" }}>India · Biomass Map</div>
+        <div className="brand">
+          <h2>Dashboard</h2>
+        </div>
+        <div style={{ color: "gray", fontSize: ".9rem" }}>
+          India · Biomass Map
+        </div>
       </div>
 
       <div className="filters-row">
-        {/* ... All your filter divs remain exactly the same ... */}
         <div className="filter">
           <label>Biomass Type</label>
           <select value={filters.biomass} onChange={e => handle("biomass", e.target.value)}>
@@ -126,6 +129,7 @@ export default function Sidebar({ filters, setFilters }) {
             {biomassTypes.map(b => <option key={b}>{b}</option>)}
           </select>
         </div>
+
         <div className="filter">
           <label>State</label>
           <select value={filters.state} onChange={e => handle("state", e.target.value)}>
@@ -133,13 +137,19 @@ export default function Sidebar({ filters, setFilters }) {
             {states.map(s => <option key={s}>{s}</option>)}
           </select>
         </div>
+
         <div className="filter">
           <label>District</label>
-          <select value={filters.district} disabled={!districts.length} onChange={e => handle("district", e.target.value)}>
+          <select
+            value={filters.district}
+            disabled={!districts.length}
+            onChange={e => handle("district", e.target.value)}
+          >
             <option value="">Select</option>
             {districts.map(d => <option key={d}>{d}</option>)}
           </select>
         </div>
+
         <div className="filter">
           <label>Industries</label>
           <select value={filters.industry} onChange={e => handle("industry", e.target.value)}>
@@ -147,10 +157,12 @@ export default function Sidebar({ filters, setFilters }) {
             {industries.map(i => <option key={i}>{i}</option>)}
           </select>
         </div>
+
         <div className="filter">
           <label>Upload CSV</label>
           <input type="file" accept=".csv" onChange={e => handleCSVUpload(e.target.files[0])} />
         </div>
+
         <div className="filter">
           <label>Boundaries</label>
           <select value={filters.boundaries || ""} onChange={e => handle("boundaries", e.target.value)}>
@@ -162,8 +174,15 @@ export default function Sidebar({ filters, setFilters }) {
 
       <div className="field-collection-center">
         <label>Field Collection</label>
-        <button onClick={() => window.open("/form", "_blank")}>Open Juliflora Form</button>
-        <button onClick={handleDownloadKoboData}>Download Submissions</button>
+
+        <button onClick={() => window.open("/form", "_blank")}>
+          Open Juliflora Form
+        </button>
+
+        <button onClick={handleDownloadKoboData}>
+          Download Submissions
+        </button>
+
         {csvStatus && <p className="csv-status">{csvStatus}</p>}
       </div>
     </header>
