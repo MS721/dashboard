@@ -70,13 +70,13 @@ export default function Sidebar({ filters, setFilters }) {
     }
 
     const formattedData = data.map(row => {
-      // Fix for [object Object]
+      // Fix for [object Object] in filename
       let photoName = row.PLANT_PHOTO;
       if (typeof row.PLANT_PHOTO === 'object' && row.PLANT_PHOTO !== null) {
         photoName = row.PLANT_PHOTO.name || "Image_File";
       }
 
-      // Updated link format to prevent 404
+      // Stable link format for public attachments
       const stableLink = photoName 
         ? `https://kc.humanitarianresponse.info/attachments/get/${photoName}` 
         : "";
