@@ -70,16 +70,15 @@ export default function Sidebar({ filters, setFilters }) {
     }
 
     const formattedData = data.map(row => {
-      // 1. Extract the clean filename
+      // 1. Clean filename
       let photoName = row.PLANT_PHOTO;
       if (typeof row.PLANT_PHOTO === 'object' && row.PLANT_PHOTO !== null) {
         photoName = row.PLANT_PHOTO.name || "Image_File";
       }
 
-      // 2. THE FIX: Using the direct view link format
-      // Note: This works best when "Anyone can view submissions" is ON in Kobo settings.
-      const stableLink = photoName 
-        ? `https://kc.humanitarianresponse.info/api/v1/data/${row._id}/attachments/${photoName}` 
+      // 2. THE FIX: Changed to Global Server (kf.kobotoolbox.org)
+      const stableLink = photoName && row._id
+        ? `https://kf.kobotoolbox.org/api/v1/data/${row._id}/attachments/${photoName}` 
         : "";
 
       return {
