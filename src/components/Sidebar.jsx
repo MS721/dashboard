@@ -69,24 +69,22 @@ export default function Sidebar({ filters, setFilters }) {
       return;
     }
 
-    // CLEANING LOGIC: Fixes [object Object] and creates clean URLs
     const formattedData = data.map(row => {
-      // 1. Fix the [object Object] issue in PLANT_PHOTO
+      // Fix for [object Object]
       let photoName = row.PLANT_PHOTO;
       if (typeof row.PLANT_PHOTO === 'object' && row.PLANT_PHOTO !== null) {
         photoName = row.PLANT_PHOTO.name || "Image_File";
       }
 
-      // 2. Build a plain-text URL that Excel can easily activate
-      // If PHOTO_URL is empty in DB, we manually build it here using _id
-      const finalLink = row.PHOTO_URL || (row._id && row.PLANT_PHOTO 
-        ? `https://kc.humanitarianresponse.info/api/v1/data/${row._id}/attachments/${photoName}` 
-        : "");
+      // Updated link format to prevent 404
+      const stableLink = photoName 
+        ? `https://kc.humanitarianresponse.info/attachments/get/${photoName}` 
+        : "";
 
       return {
         ...row,
         PLANT_PHOTO: photoName,
-        PHOTO_URL: finalLink
+        PHOTO_URL: stableLink
       };
     });
 
