@@ -69,25 +69,33 @@ export default function Sidebar({ filters, setFilters }) {
       return;
     }
 
-    // CLEANING LOGIC: Fixes [object Object] and creates Excel Hyperlinks
+    // CLEANING LOGIC: Fixes [object Object] and creates clean URLs
     const formattedData = data.map(row => {
-      // 1. Extract photo name if it's trapped in an object
+      // 1. Fix the [object Object] issue in PLANT_PHOTO
       let photoName = row.PLANT_PHOTO;
       if (typeof row.PLANT_PHOTO === 'object' && row.PLANT_PHOTO !== null) {
         photoName = row.PLANT_PHOTO.name || "Image_File";
       }
 
-      // 2. Generate the Excel Hyperlink using the PHOTO_URL column
+      // 2. Build a plain-text URL that Excel can easily activate
+      // If PHOTO_URL is empty in DB, we manually build it here using _id
+      const finalLink = row.PHOTO_URL || (row._id && row.PLANT_PHOTO 
+        ? `https://kc.humanitarianresponse.info/api/v1/data/${row._id}/attachments/${photoName}` 
+        : "");
+
       return {
         ...row,
         PLANT_PHOTO: photoName,
-        PHOTO_URL: row.PHOTO_URL 
-          ? `=HYPERLINK("${row.PHOTO_URL}", "Click to View Photo")` 
-          : "No Link Generated"
+        PHOTO_URL: finalLink
       };
     });
 
-    const csv = Papa.unparse(formattedData);
+    // Unparse without quotes to help Excel recognize links
+    const csv = Papa.unparse(formattedData, {
+      quotes: false, 
+      delimiter: ","
+    });
+
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
