@@ -69,8 +69,8 @@ export default function Sidebar({ filters, setFilters }) {
       return;
     }
 
-    // Attempt to get from Environment Variable, or fallback to your string
-    const KOBO_USERNAME = process.env.REACT_APP_KOBO_USERNAME || "YOUR_USERNAME";
+    // This pulls from your Vercel Environment Variables
+    const KOBO_USERNAME = process.env.REACT_APP_KOBO_USERNAME;
 
     const formattedData = data.map(row => {
       let photoName = row.PLANT_PHOTO;
@@ -78,10 +78,9 @@ export default function Sidebar({ filters, setFilters }) {
         photoName = row.PLANT_PHOTO.name || "Image_File";
       }
 
-      // THE LEGACY FIX: 
-      // This URL bypasses many API restrictions on the Global Server
-      const stableLink = photoName 
-        ? `https://kf.kobotoolbox.org/media/get/${KOBO_USERNAME}/attachments/${photoName}` 
+      // Updated link format for kf.kobotoolbox.org with public sharing enabled
+      const stableLink = (photoName && KOBO_USERNAME)
+        ? `https://kf.kobotoolbox.org/attachment/original?media_file=${KOBO_USERNAME}/attachments/${photoName}` 
         : "";
 
       return {
