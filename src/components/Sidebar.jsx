@@ -69,12 +69,10 @@ export default function Sidebar({ filters, setFilters }) {
       return;
     }
 
-    // Attempt to get the username from Vercel Env
-    // Checking both process.env (Webpack) and import.meta.env (Vite) for compatibility
+    // Pulling securely from Environment Variables
     const KOBO_USERNAME = 
-      (process.env && process.env.REACT_APP_KOBO_USERNAME) || 
-      (import.meta.env && import.meta.env.VITE_KOBO_USERNAME) ||
-      "YOUR_MANUAL_USERNAME_HERE"; // Fallback if Env fails
+      import.meta.env.VITE_KOBO_USERNAME || 
+      process.env.REACT_APP_KOBO_USERNAME;
 
     const formattedData = data.map(row => {
       let photoName = row.PLANT_PHOTO;
@@ -83,8 +81,7 @@ export default function Sidebar({ filters, setFilters }) {
       }
 
       // Constructed URL based on your server: kf.kobotoolbox.org
-      // And your public sharing settings
-      const stableLink = (photoName && KOBO_USERNAME !== "YOUR_MANUAL_USERNAME_HERE")
+      const stableLink = (photoName && KOBO_USERNAME)
         ? `https://kf.kobotoolbox.org/attachment/original?media_file=${KOBO_USERNAME}/attachments/${photoName}` 
         : "";
 
