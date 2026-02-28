@@ -56,7 +56,7 @@ export default function Sidebar({ filters, setFilters }) {
   const handleDownloadKoboData = async () => {
     setCsvStatus("Preparing download...");
     
-    // Fetch from the new biomass_collection table
+    // Fetch from the biomass_collection table
     const { data, error } = await supabase
       .from("biomass_collection")
       .select("*");
@@ -78,7 +78,7 @@ export default function Sidebar({ filters, setFilters }) {
         photoList = row.PLANT_PHOTO.join(", ");
       }
 
-      // We use PHOTO_URLS (plural) which is now automatically created by your Supabase trigger
+      // Return the row with formatted photos and the generated links
       return {
         ...row,
         PLANT_PHOTO: photoList,
