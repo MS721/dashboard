@@ -55,6 +55,8 @@ export default function Sidebar({ filters, setFilters }) {
 
   const handleDownloadKoboData = async () => {
     setCsvStatus("Preparing download...");
+    
+    // Fetch from the new biomass_collection table
     const { data, error } = await supabase
       .from("biomass_collection")
       .select("*");
@@ -69,26 +71,18 @@ export default function Sidebar({ filters, setFilters }) {
       return;
     }
 
-    // Pulling securely from Environment Variables
-    const KOBO_USERNAME = 
-      import.meta.env.VITE_KOBO_USERNAME || 
-      process.env.REACT_APP_KOBO_USERNAME;
-
     const formattedData = data.map(row => {
-      let photoName = row.PLANT_PHOTO;
-      if (typeof row.PLANT_PHOTO === 'object' && row.PLANT_PHOTO !== null) {
-        photoName = row.PLANT_PHOTO.name || "Image_File";
+      // Handle the array of photos: join them into a comma-separated string for CSV
+      let photoList = row.PLANT_PHOTO;
+      if (Array.isArray(row.PLANT_PHOTO)) {
+        photoList = row.PLANT_PHOTO.join(", ");
       }
 
-      // Constructed URL based on your server: kf.kobotoolbox.org
-      const stableLink = (photoName && KOBO_USERNAME)
-        ? `https://kf.kobotoolbox.org/attachment/original?media_file=${KOBO_USERNAME}/attachments/${photoName}` 
-        : "";
-
+      // We use PHOTO_URLS (plural) which is now automatically created by your Supabase trigger
       return {
         ...row,
-        PLANT_PHOTO: photoName,
-        PHOTO_URL: stableLink
+        PLANT_PHOTO: photoList,
+        PHOTO_URLS: row.PHOTO_URLS || ""
       };
     });
 
