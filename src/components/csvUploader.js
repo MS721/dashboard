@@ -8,14 +8,11 @@ function cleanValue(val) {
   v = v.replace(/[\u0000-\u001F]+/g, "");
   v = v.replace(/,,+/g, ",");
   v = v.replace(/\s+/g, " ");
-  v = v.replace(/\.csv/gi, "");
   return v === "" ? null : v;
 }
 
 export async function uploadCSVToSupabase(file) {
-  if (!file || !file.name.toLowerCase().endsWith(".csv")) {
-    return { success: false, message: "Please upload a valid CSV file." };
-  }
+  if (!file) return { success: false, message: "No file provided." };
 
   try {
     const parsed = await new Promise((resolve, reject) => {
@@ -28,9 +25,7 @@ export async function uploadCSVToSupabase(file) {
       });
     });
 
-    let rows = parsed.data;
-
-    for (let rawRow of rows) {
+    for (let rawRow of parsed.data) {
       let row = {};
       Object.keys(rawRow).forEach((key) => {
         row[key] = cleanValue(rawRow[key]);
@@ -38,41 +33,37 @@ export async function uploadCSVToSupabase(file) {
 
       const num = (v) => (v === null || v === "" ? 0 : Number(v));
 
-      // This object keys match your Supabase SQL column names exactly
+      // CRITICAL: Keys must match the double-quoted names in SQL exactly
       const insertRow = {
         filename: file.name,
-        name: row["Name"],
-        ph_no: row["Ph no"],
-        date_of_survey: row["DATE OF SURVEY"],
-        time_of_survey: row["TIME OF SURVEY"],
-        gps_coordinates: row["GPS COORDINATES"],
-        state: row["STATE"],
-        district: row["DISTRICT"],
-        taluka: row["TALUKA"],
-        village: row["VILLAGES"] || row["VILLAGE"], // Handle both singular and plural from CSV
-        grid_id: row["GRID ID"],
-        gcp_id: row["GCP ID"],
-        juliflora_count: num(row["JULIFLORA COUNT"]),
-        other_species_count: num(row["OTHER SPECIES COUNT"]),
-        juliflora_density: num(row["JULIFLORA DENSITY"]),
-        // Converting string of photos to a JSON array for your JSONB column
-        plant_photo: row["PLANT PHOTO"] ? row["PLANT PHOTO"].split(" ") : [],
-        acknowledgement: row["ACKNOWLEDGEMENT"],
-        data: row, // Stores the full raw row as requested
+        "Name": row["Name"],
+        "Ph no": row["Ph no"],
+        "DATE OF SURVEY": row["DATE OF SURVEY"],
+        "TIME OF SURVEY": row["TIME OF SURVEY"],
+        "GPS COORDINATES": row["GPS COORDINATES"],
+        "STATE": row["STATE"],
+        "DISTRICT": row["DISTRICT"],
+        "TALUKA": row["TALUKA"],
+        "VILLAGE": row["VILLAGES"] || row["VILLAGE"], 
+        "GRID ID": row["GRID ID"],
+        "GCP ID": row["GCP ID"],
+        "JULIFLORA COUNT": num(row["JULIFLORA COUNT"]),
+        "OTHER SPECIES COUNT": num(row["OTHER SPECIES COUNT"]),
+        "JULIFLORA DENSITY": num(row["JULIFLORA DENSITY"]),
+        "PLANT PHOTO": row["PLANT PHOTO"] ? row["PLANT PHOTO"].split(" ") : [],
+        "ACKNOWLEDGEMENT": row["ACKNOWLEDGEMENT"],
+        data: row, 
       };
 
       const { error } = await supabase
         .from("biomass_collection")
         .insert(insertRow);
 
-      if (error) {
-        console.error("Supabase Insert Error:", error.message);
-      }
+      if (error) throw error;
     }
-
     return { success: true, message: "Database updated successfully!" };
   } catch (err) {
-    console.error("Uploader logic error:", err);
-    return { success: false, message: "Error processing CSV file." };
+    console.error("Upload Error:", err.message);
+    return { success: false, message: "Upload failed: " + err.message };
   }
 }
