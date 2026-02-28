@@ -54,7 +54,7 @@ export async function uploadCSVToSupabase(file) {
         "OTHER_SPECIES_COUNT": num(row.OTHER_SPECIES_COUNT || row.other_species),
         "JULIFLORA_DENSITY": num(row.JULIFLORA_DENSITY || row.juliflora_density),
         
-        // Multiple photos split by space (Kobo default)
+        // Multiple photos split by space (Kobo default for single column export)
         "PLANT_PHOTO": row.PLANT_PHOTO ? row.PLANT_PHOTO.split(" ") : [],
         "ACKNOWLEDGEMENT": row.ACKNOWLEDGEMENT || row.acknowledgement,
         
