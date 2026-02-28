@@ -22,7 +22,7 @@ export async function uploadCSVToSupabase(file) {
       Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
-        delimiter: ";", // Semicolon matches your Kobo export
+        delimiter: ";", 
         complete: resolve,
         error: reject,
       });
@@ -38,7 +38,7 @@ export async function uploadCSVToSupabase(file) {
 
       const num = (v) => (v === null || v === "" ? 0 : Number(v));
 
-      // MAPPING: Database Key (Left) : CSV Header (Right)
+      // This object keys match your Supabase SQL column names exactly
       const insertRow = {
         filename: file.name,
         name: row["Name"],
@@ -49,15 +49,16 @@ export async function uploadCSVToSupabase(file) {
         state: row["STATE"],
         district: row["DISTRICT"],
         taluka: row["TALUKA"],
-        village: row["VILLAGE"] || row["VILLAGES"], 
+        village: row["VILLAGES"] || row["VILLAGE"], // Handle both singular and plural from CSV
         grid_id: row["GRID ID"],
         gcp_id: row["GCP ID"],
         juliflora_count: num(row["JULIFLORA COUNT"]),
         other_species_count: num(row["OTHER SPECIES COUNT"]),
         juliflora_density: num(row["JULIFLORA DENSITY"]),
+        // Converting string of photos to a JSON array for your JSONB column
         plant_photo: row["PLANT PHOTO"] ? row["PLANT PHOTO"].split(" ") : [],
         acknowledgement: row["ACKNOWLEDGEMENT"],
-        data: row, // Stores raw row for backup
+        data: row, // Stores the full raw row as requested
       };
 
       const { error } = await supabase
@@ -65,13 +66,13 @@ export async function uploadCSVToSupabase(file) {
         .insert(insertRow);
 
       if (error) {
-        console.error("Insert Error details:", error);
+        console.error("Supabase Insert Error:", error.message);
       }
     }
 
     return { success: true, message: "Database updated successfully!" };
   } catch (err) {
-    console.error("Uploader Error:", err);
-    return { success: false, message: "Error parsing CSV file." };
+    console.error("Uploader logic error:", err);
+    return { success: false, message: "Error processing CSV file." };
   }
 }
