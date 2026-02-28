@@ -83,6 +83,11 @@ export async function uploadCSVToSupabase(file) {
         other_species: num(row.other_species),
         juliflora_density: num(row.juliflora_density),
         image: cleanBase64(row.image),
+        
+        // NEW FIELDS FOR MULTIPLE IMAGES AND ACKNOWLEDGEMENT
+        // Splits the Kobo photo string (e.g., "img1.jpg img2.jpg") into a Postgres array
+        plant_photo: row.PLANT_PHOTO ? row.PLANT_PHOTO.split(" ") : [],
+        acknowledgement: row.ACKNOWLEDGEMENT,
 
         // keep full row as JSON
         data: row,
