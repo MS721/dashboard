@@ -22,7 +22,7 @@ export async function uploadCSVToSupabase(file) {
       Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
-        delimiter: ";", // Updated to semicolon based on your file
+        delimiter: ";", // Semicolon matches your Kobo export
         complete: resolve,
         error: reject,
       });
@@ -38,39 +38,40 @@ export async function uploadCSVToSupabase(file) {
 
       const num = (v) => (v === null || v === "" ? 0 : Number(v));
 
+      // MAPPING: Database Key (Left) : CSV Header (Right)
       const insertRow = {
         filename: file.name,
-        "Name": row["Name"],
-        "Ph no": row["Ph no"],
-        "DATE OF SURVEY": row["DATE OF SURVEY"],
-        "TIME OF SURVEY": row["TIME OF SURVEY"],
-        "GPS COORDINATES": row["GPS COORDINATES"],
-        "STATE": row["STATE"],
-        "DISTRICT": row["DISTRICT"],
-        "TALUKA": row["TALUKA"],
-        "VILLAGE": row["VILLAGE"] || row["VILLAGES"], // Matches your CSV header 'VILLAGES'
-        "GRID ID": row["GRID ID"],
-        "GCP ID": row["GCP ID"],
-        "JULIFLORA COUNT": num(row["JULIFLORA COUNT"]),
-        "OTHER SPECIES COUNT": num(row["OTHER SPECIES COUNT"]),
-        "JULIFLORA DENSITY": num(row["JULIFLORA DENSITY"]),
-        
-        // Multiple photos split by space (Kobo default for single column export)
-        "PLANT_PHOTO": row["PLANT PHOTO"] ? row["PLANT PHOTO"].split(" ") : [],
-        "ACKNOWLEDGEMENT": row["ACKNOWLEDGEMENT"],
-        
-        data: row,
+        name: row["Name"],
+        ph_no: row["Ph no"],
+        date_of_survey: row["DATE OF SURVEY"],
+        time_of_survey: row["TIME OF SURVEY"],
+        gps_coordinates: row["GPS COORDINATES"],
+        state: row["STATE"],
+        district: row["DISTRICT"],
+        taluka: row["TALUKA"],
+        village: row["VILLAGE"] || row["VILLAGES"], 
+        grid_id: row["GRID ID"],
+        gcp_id: row["GCP ID"],
+        juliflora_count: num(row["JULIFLORA COUNT"]),
+        other_species_count: num(row["OTHER SPECIES COUNT"]),
+        juliflora_density: num(row["JULIFLORA DENSITY"]),
+        plant_photo: row["PLANT PHOTO"] ? row["PLANT PHOTO"].split(" ") : [],
+        acknowledgement: row["ACKNOWLEDGEMENT"],
+        data: row, // Stores raw row for backup
       };
 
       const { error } = await supabase
         .from("biomass_collection")
         .insert(insertRow);
 
-      if (error) console.error("Insert Error:", error);
+      if (error) {
+        console.error("Insert Error details:", error);
+      }
     }
 
     return { success: true, message: "Database updated successfully!" };
   } catch (err) {
+    console.error("Uploader Error:", err);
     return { success: false, message: "Error parsing CSV file." };
   }
 }
