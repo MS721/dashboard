@@ -72,32 +72,25 @@ export default function Sidebar({ filters, setFilters }) {
     }
 
     const formattedData = data.map(row => {
-      // Handle the array of photos: join them into a comma-separated string for CSV
-      let photoList = row["PLANT PHOTO"] || row.PLANT_PHOTO;
-      if (Array.isArray(photoList)) {
-        photoList = photoList.join(", ");
-      }
-
-      // Return the row with formatted photos and the generated links
-      // We map the database keys to match your Kobo CSV headers exactly
+      // Map database snake_case keys back to Human Readable headers for the CSV file
       return {
-        "Name": row.Name,
-        "Ph no": row["Ph no"],
-        "DATE OF SURVEY": row["DATE OF SURVEY"],
-        "TIME OF SURVEY": row["TIME OF SURVEY"],
-        "GPS COORDINATES": row["GPS COORDINATES"],
-        "STATE": row.STATE,
-        "DISTRICT": row.DISTRICT,
-        "TALUKA": row.TALUKA,
-        "VILLAGE": row.VILLAGE,
-        "GRID ID": row["GRID ID"],
-        "GCP ID": row["GCP ID"],
-        "JULIFLORA COUNT": row["JULIFLORA COUNT"],
-        "OTHER SPECIES COUNT": row["OTHER SPECIES COUNT"],
-        "JULIFLORA DENSITY": row["JULIFLORA DENSITY"],
-        "PLANT PHOTO": photoList,
+        "Name": row.name,
+        "Ph no": row.ph_no,
+        "DATE OF SURVEY": row.date_of_survey,
+        "TIME OF SURVEY": row.time_of_survey,
+        "GPS COORDINATES": row.gps_coordinates,
+        "STATE": row.state,
+        "DISTRICT": row.district,
+        "TALUKA": row.taluka,
+        "VILLAGE": row.village,
+        "GRID ID": row.grid_id,
+        "GCP ID": row.gcp_id,
+        "JULIFLORA COUNT": row.juliflora_count,
+        "OTHER SPECIES COUNT": row.other_species_count,
+        "JULIFLORA DENSITY": row.juliflora_density,
+        "PLANT PHOTO": Array.isArray(row.plant_photo) ? row.plant_photo.join(", ") : row.plant_photo,
         "PHOTO_URLS": row.PHOTO_URLS || "",
-        "ACKNOWLEDGEMENT": row.ACKNOWLEDGEMENT || ""
+        "ACKNOWLEDGEMENT": row.acknowledgement
       };
     });
 
