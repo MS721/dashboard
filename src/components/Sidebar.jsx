@@ -73,16 +73,31 @@ export default function Sidebar({ filters, setFilters }) {
 
     const formattedData = data.map(row => {
       // Handle the array of photos: join them into a comma-separated string for CSV
-      let photoList = row.PLANT_PHOTO;
-      if (Array.isArray(row.PLANT_PHOTO)) {
-        photoList = row.PLANT_PHOTO.join(", ");
+      let photoList = row["PLANT PHOTO"] || row.PLANT_PHOTO;
+      if (Array.isArray(photoList)) {
+        photoList = photoList.join(", ");
       }
 
       // Return the row with formatted photos and the generated links
+      // We map the database keys to match your Kobo CSV headers exactly
       return {
-        ...row,
-        PLANT_PHOTO: photoList,
-        PHOTO_URLS: row.PHOTO_URLS || ""
+        "Name": row.Name,
+        "Ph no": row["Ph no"],
+        "DATE OF SURVEY": row["DATE OF SURVEY"],
+        "TIME OF SURVEY": row["TIME OF SURVEY"],
+        "GPS COORDINATES": row["GPS COORDINATES"],
+        "STATE": row.STATE,
+        "DISTRICT": row.DISTRICT,
+        "TALUKA": row.TALUKA,
+        "VILLAGE": row.VILLAGE,
+        "GRID ID": row["GRID ID"],
+        "GCP ID": row["GCP ID"],
+        "JULIFLORA COUNT": row["JULIFLORA COUNT"],
+        "OTHER SPECIES COUNT": row["OTHER SPECIES COUNT"],
+        "JULIFLORA DENSITY": row["JULIFLORA DENSITY"],
+        "PLANT PHOTO": photoList,
+        "PHOTO_URLS": row.PHOTO_URLS || "",
+        "ACKNOWLEDGEMENT": row.ACKNOWLEDGEMENT || ""
       };
     });
 
