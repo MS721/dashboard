@@ -56,7 +56,7 @@ export default function Sidebar({ filters, setFilters }) {
   const handleDownloadKoboData = async () => {
     setCsvStatus("Preparing download...");
     
-    // Fetch from the biomass_collection table
+    // Fetch from the biomass_collection table using your SQL schema
     const { data, error } = await supabase
       .from("biomass_collection")
       .select("*");
@@ -72,7 +72,14 @@ export default function Sidebar({ filters, setFilters }) {
     }
 
     const formattedData = data.map(row => {
-      // Map database snake_case keys back to Human Readable headers for the CSV file
+      // Logic to handle the plant_photo JSONB array
+      let photoString = "";
+      if (Array.isArray(row.plant_photo)) {
+        photoString = row.plant_photo.join(" ");
+      } else if (typeof row.plant_photo === 'string') {
+        photoString = row.plant_photo;
+      }
+
       return {
         "Name": row.name,
         "Ph no": row.ph_no,
@@ -88,8 +95,7 @@ export default function Sidebar({ filters, setFilters }) {
         "JULIFLORA COUNT": row.juliflora_count,
         "OTHER SPECIES COUNT": row.other_species_count,
         "JULIFLORA DENSITY": row.juliflora_density,
-        "PLANT PHOTO": Array.isArray(row.plant_photo) ? row.plant_photo.join(", ") : row.plant_photo,
-        "PHOTO_URLS": row.PHOTO_URLS || "",
+        "PLANT PHOTO": photoString,
         "ACKNOWLEDGEMENT": row.acknowledgement
       };
     });
@@ -105,7 +111,7 @@ export default function Sidebar({ filters, setFilters }) {
     link.href = url;
     link.setAttribute(
       "download",
-      `Field_Data_${new Date().toISOString().split("T")[0]}.csv`
+      `Biomass_Collection_Export_${new Date().toISOString().split("T")[0]}.csv`
     );
     document.body.appendChild(link);
     link.click();
